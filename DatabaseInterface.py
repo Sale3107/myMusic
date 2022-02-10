@@ -20,7 +20,7 @@ class DatabaseInterface:
                             ) """)
 
     def insert_record(self, newRecord: Record):
-        # Insert records into the database.
+        # Inserts a record into the database.
         artist = newRecord.get_artist()
         album = newRecord.get_record_name()
         size = newRecord.get_size()
@@ -30,10 +30,8 @@ class DatabaseInterface:
             self.cursor.execute("INSERT INTO music VALUES (:artist, :album, :size, :location)",
                                 {'artist': artist, 'album': album, 'size': size, 'location': location})
 
-    def remove_record(self, deletedRecord: Record):
+    def remove_record(self, artist: str, album: str):
         # Removes a record from the music Database.
-        artist = deletedRecord.get_artist()
-        album = deletedRecord.get_record_name()
         with self.conn:
             self.cursor.execute("DELETE from music WHERE artist = :artist AND album = :album",
                                 {'artist': artist, 'album': album})
@@ -62,7 +60,13 @@ class DatabaseInterface:
         record = self.cursor.fetchone()
         return record
 
+    def get_all_records(self):
+        # Return all records from the database.
+        self.cursor.execute("SELECT * FROM music")
+        return self.cursor.fetchall()
+
     def update_location(self, updatedRecord: Record):
+        # Update the value of location for a Record in the database.
         artist = updatedRecord.get_artist()
         album = updatedRecord.get_record_name()
 
