@@ -26,3 +26,15 @@ class Record:
         return self.location
 
     # End
+
+    def format_for_output(self) -> str:
+        # Generic method for creating a formatted string based of a database record.
+        newString = """
+        [Artist]: {art}
+        [Album]: {alb}
+        [Location]: {loc}\n
+        """.format(art=self.get_artist(),
+                   alb=self.get_record_name(),
+                   loc=self.get_location())
+
+        return newString
